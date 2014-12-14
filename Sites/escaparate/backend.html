@@ -1,0 +1,42 @@
+
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Content Editor</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="lib/jquery-2.1.1.min.js" type="text/javascript"></script>
+        <script src="backend.js" type="text/javascript"></script>
+        <link href="bestyle.css" rel="stylesheet" type="text/css"/>
+
+    </head>
+    <body>
+
+        <div id="container">
+            <form>
+                <fieldset id="catArea" >
+                    <legend>Select a category</legend>
+                    <select id="category">
+                        <option selected disabled>Choose a category</option>
+                    </select>
+                    <input type="button" id="catEdit" value="Edit Category Info" class="hide edit">
+                    <input type="button" id="catAdd" value="Add New Category" class="edit">
+                </fieldset>
+                <fieldset id="subcatArea" class="hide">
+                    <legend>Select a subcategory</legend>
+                    <select id="subcategory"></select>
+                    <input type="button" id="subcatEdit" value="Edit Subcategory Info" class="hide edit">
+                    <input type="button" id="subcatAdd" value="Add New subategory" class="edit">
+                </fieldset>
+                <fieldset id="imgArea" class="hide">
+                    <legend>Select an image</legend>
+                    <select id="img"></select>
+                    <input type="button" id="imgEdit" value="Edit Image Info" class="hide edit">
+                    <input type="button" id="imgAdd" value="Add New Image" class="edit">
+                </fieldset>
+                <input type="button" id="reload" value="Reload">
+            </form>
+        </div>
+    </body>
+</html>
