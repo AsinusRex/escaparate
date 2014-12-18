@@ -1,93 +1,103 @@
-    .hide{
-                display:none;
-            }
+body{
+    background:#000066;
+    color:#ffcc39;
+}
 
-            form {
-                //  width: 50%;
-                margin: 0 auto;
-                display: inline-table;
-            }
-            textarea{
-                display: block;
-                width: 70%;
-                resize: none;
-                outline: none;
-                margin: 0 ;
-                height: 15vh;
+.hide{
+    display:none;
+}
 
-            }
+form {
+    width: 50%;
+    margin: 0 auto;
+    display: inline-table;
+}
+textarea{
+    display: block;
+    width: 70%;
+    resize: none;
+    outline: none;
+    margin: 0 ;
+    height: 15vh;
 
-            label{
-                display: block;
-                text-align: left;
-                margin: 1vh;
-            }
-            #container{
-                text-align: center;
-            }
+}
 
-            fieldset{
-                margin: 0 auto;
-                display: table-cell;
-            }
-            #back{
-                background:url("img/resources/arrowBack.gif") no-repeat center;
-                background-size: 100% 100%;
-                width: 5vw;
-                height: 80vh;
-                color:white;
-                float: left;
-                display: inline-table;
-            }
+label{
+    display: block;
+    text-align: left;
+    margin: 1vh;
+}
+#container{
+    text-align: center;
+}
 
-            #loading{
-                display: table-cell;
-                height: 50vh;
-                margin: 0 auto;
-                -webkit-animation:spin 4s linear infinite;
-                -moz-animation:spin 4s linear infinite;
-            }
-            @-moz-keyframes spin { 100% { -moz-transform: rotate(-360deg); } }
-            @-webkit-keyframes spin { 100% { -webkit-transform: rotate(-360deg); } }
-            @keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(-360deg); } }
+fieldset{
+    margin: 0 auto;
+    display: table-cell;
+}
+#back{
+    background:url("img/resources/arrowBack.gif") no-repeat center;
+    background-size: 100% 100%;
+    width: 5vw;
+    height: 80vh;
+    color:black;
+    float: left;
+    display: inline-table;
+}
 
-            h1{
-                margin-top: 5%;
-                text-align: center;
-            }
-            #editAdd {
-                width:90%;
+#loading{
+    display: table-cell;
+    height: 50vh;
+    margin: 0 auto;
+    -webkit-animation:spin 4s linear infinite;
+    -moz-animation:spin 4s linear infinite;
+}
+@-moz-keyframes spin { 100% { -moz-transform: rotate(-360deg); } }
+@-webkit-keyframes spin { 100% { -webkit-transform: rotate(-360deg); } }
+@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(-360deg); } }
 
-            }
+h1{
+    margin-top: 5%;
+    text-align: center;
+}
+#editAdd {
+    width:90%;
 
-            #editAdd img{
-                display: inline-block;
-                width:20vw;
+}
+#editAdd button{
+    height: 50px;
+    width: 25%;
+    margin: 10px;
+}
 
-            }
-            #editAdd input[type='file']{
-                display: inline-block;
-                margin: 1vh 1vw;
-                border: 1px solid black;
-            }
+#editAdd img{
+    display: inline-block;
+    width:20vw;
+
+}
+#editAdd input[type='file']{
+    display: inline-block;
+    margin: 1vh 1vw;
+    border: 1px solid black;
+}
 
 
-            #editAdd input[type='text']{
-                display: block;
-                margin: 1vh 1vw;
-            }
-            #catInfoSubmit{
-                margin-top: 2vh;
-                width:20%;
-                background: grey;
-            }
+#editAdd input[type='text']{
+    display: block;
+    margin: 1vh 1vw;
+}
+#catInfoSubmit{
+    margin-top: 2vh;
+    width:20%;
+    background: grey;
+}
 
-            #imgLoad {
-                float:left;
-                display: inline-block;
-                margin: 15% 2%;
-                width: 20%;
-height: 50vh;
-             border: none;
+#imgLoad {
+    float:left;
+    display: inline-block;
+    margin: 15% 2%;
+    width: 20%;
+    height: 50vh;
+    border: none;
 
-            }
+}
