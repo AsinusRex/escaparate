@@ -1,271 +1,263 @@
-// Language Version
-var lang = 'en';
+//load main index
+var lang = ['en', 'fr', 'ru', 'he'];
+var currentLang = 0;
+var data = $.getJSON('data_en.json', function (dataJson) {
+    data = dataJson;
 
-$(document).on('click', "#langMenu button", function () {
-    lang = this.id;
-    console.log(lang);
-    switch (lang) {
-        case 'en':
-            $('#home').html('Home');
-            $('#0').html('Architects');
-            $('#1').html('Contractors');
-            $('#2').html('Entrepreneurs');
-            $('#3').html('Projects');
-            $('#4').html('Interior');
-            $('#5').html('Publications');
-            $('#searchbar input[type="text"]').prop('placeholder', 'Enter search term');
-            $('#searchbar input[type="submit"]').attr('value', 'Submit');
-            $('#contactUs').html('Contact Us');
-            $('#languageSelect').html('Select Language');
-            break;
-        case 'fr':
-            $('#home').html('Portail');
-            $('#0').html('Architectes');
-            $('#1').html('Contractueles');
-            $('#2').html('Entrepreneurs');
-            $('#3').html('Projets');
-            $('#4').html('D\'intérieur');
-            $('#5').html('Publicationes');
-            $('#searchbar input[type="text"]').prop('placeholder', 'Entrez un terme de recherche');
-            $('#searchbar input[type="submit"]').attr('value', 'Soumettre');
-            $('#contactUs').html('Contactez-nous');
-            $('#languageSelect').html('Choisir la langue');
-            break;
-        case 'he':
-            $('#home').html('עמוד הבית');
-            $('#0').html('אדריכלים');
-            $('#1').html('קבלנים');
-            $('#2').html('יזמים');
-            $('#3').html('פרויקטים');
-            $('#4').html('עיציב פנים');
-            $('#5').html('הוצאה לאור');
-            $('#searchbar input[type="text"]').prop('placeholder', 'הזן מונחי חיפוש');
-            $('#searchbar input[type="submit"]').attr('value', 'חפש');
-            $('#contactUs').html('צור קשר');
-            $('#languageSelect').html('בחירת שפה');
-            break;
-        case 'ru':
-            $('#home').html('портал');
-            $('#0').html('архитекторы');
-            $('#1').html('Подрядчики');
-            $('#2').html('Предприниматели');
-            $('#3').html('проекты');
-            $('#4').html('интерьера');
-            $('#5').html('Публикации');
-            $('#searchbar input[type="text"]').prop('placeholder', 'Введите условия поиска');
-            $('#searchbar input[type="submit"]').attr('value', 'представлять');
-            $('#contactUs').html('свяжитесь с нами');
-            $('#languageSelect').html('Выберите язык');
-            break;
-    }
-});
+}).done(function () {
 
-//Calculate window sizes
-
-mainWidth = $('#main').width();
-mainHeight = $('#main').height();
-
-
-function getTemplate(templateUrl)
-{
-    $.get('templates/' + templateUrl, function (content)
-    {
-        if (templateUrl === 'leftMenu.html')
-        {
-            $('#leftMenu').html(content);
-        }
-        else
-        {
-            $('#main').html(content);
-        }
-    });
-}
-//Load leftMenu content
-getTemplate('leftMenu.html');
-//Load mainWindow content
-getTemplate('homeWindow.html');
-
-
-
-//Event handlers for LeftMenu
-$(document).on('click', '#leftMenu a', function ()
-{
-    var selectedClass = $(this).attr('class');
-    var selectedElement = this.id;
-    //Load Selected View
-    $('#main').html('').css({'background': 'none'});
-
-    //Navigation
-    switch (selectedClass)
-    {
-        case 'social':
-            getTemplate('social.html');
-            switch (selectedElement)
-            {
-                case 'facebook':
-                    alert('getting FB');
-                    break;
-                case 'googleplus':
-                    alert('getting googleplus');
-                    break;
-                case 'linkedin':
-                    alert('getting linkedin');
-                    break;
-                case 'twitter':
-                    alert('getting twitter');
-                    break;
-                case 'share':
-                    alert('getting sharepanel');
-                    break;
-            }
-            break;
-        case 'category':
-            getTemplate('categoryMenu.html');
-            getData(selectedElement);
-            break;
-        default:
-            switch (selectedElement)
-            {
-                case 'home':
-
-                    getTemplate('homeWindow.html');
-                    break;
-                case 'contactUs':
-                    getTemplate('contactUs.html');
-                    break;
-                case 'languageSelect':
-                    getTemplate('languageSelect.html');
-                    break;
-            }
-    }
-    ;
-// Load main JSON
-    function getData(selectedElement) {
-        $.getJSON('data_' + lang + '.json', function (data)
-        {
-            $.each(data.category, function (entryIndex)
-            {
-                var categoryId = data.category[entryIndex].categoryId;
-                //Load selected category
-                if (categoryId === selectedElement)
-                {
-                    var subcategory = data.category[entryIndex].subcategory;
-                    var numberOfButtons = data.category[entryIndex].subcategory.length;
-                    subcatButtonWidth = ($('#subcategoryButtons').width()) * 0.3;
-                    var buttonSpanWidth = numberOfButtons * subcatButtonWidth;
-                    $.each(subcategory, function (subentryIndex)
-                    {
-                        var subcategoryName = data.category[entryIndex].subcategory[subentryIndex].subcategoryName;
-                        var subcategoryId = data.category[entryIndex].subcategory[subentryIndex].subcategoryId;
-                        $('#subcategoryButtons span').append('<button id="' + categoryId + subcategoryId + '" style="background: url(img/content/' + categoryId + subcategoryId + '.jpg) no-repeat center; background-size:contain; margin:auto;">' + subcategoryName + '</button>').css({'width': buttonSpanWidth});
-                    });
-                }
-            });
-            subcategoryLoader(data);
-            $('#overlayRight').addClass('overlayOpen').html('<img src="img/resources/arrowUp.gif" class="arrows arrowOpen"><p>' + data.category[selectedElement].categoryInfo + '</p>');
-            $('#subcategoryButtons span button').css({'width': subcatButtonWidth, 'margin': 0});
+    var loadedText = [];
+    populateMenu();
+    function populateMenu() {
+        var enBtn = ['Home', 'Contact Us', 'Meet Gal Akoka', 'Language'];
+        var frBtn = ['Accueil', 'Contactez-nous', 'Rencontrer Gal Akoka', 'Langue'];
+        var ruBtn = ['Гавная', 'Контакты', 'Знакомства Гал Акока', 'Язык'];
+        var heBtn = ['בית', 'צור קשר', 'תכירו את גל אקוקה', 'שפה'];
+        var btnArray = [enBtn, frBtn, ruBtn, heBtn];
+        $.each($('#menu button'), function (i) {
+            $('#' + this.id).html(btnArray[currentLang][i]);
+            i++;
         });
     }
-    ;
 
-    $('#main a').html(selectedElement);
-});
-
-//Event handlers for mainWindow
-
-function subcategoryLoader(data)
-{
-    scroller();
-    //onHover events
-    $('#subcategoryButtons button').hover(
-            function ()
-            {
-                var entryIndex = this.id[0];
-                var subentryIndex = parseInt(this.id.slice(-2));
-                var subcategoryInfo = data.category[entryIndex].subcategory[subentryIndex].subcategoryInfo;
-                $('#subcategoryInfo').append($('<p>' + subcategoryInfo + '</p>'));
-            },
-            function ()
-            {
-                $('#subcategoryInfo').find("*:last").remove();
-            });
-
-
-    //Load Thumbnails
-    $(document).on('click', "#subcategoryButtons button", function () {
-        var entryIndex = this.id[0];
-        var subentryIndex = parseInt(this.id.slice(-2));
-        var imgs = data.category[entryIndex].subcategory[subentryIndex].imgs;
-        $('main').html('');
-        $.get("templates/imgMenu.html", function (content)
-        {
-            $('#main').html(content);
-        }).done(function () {
-            var numberOfButtons = data.category[entryIndex].subcategory[subentryIndex].imgs.length;
-            imgButtonWidth = ($('#imgButtons').width()) * 0.3;
-            var buttonSpanWidth = numberOfButtons * imgButtonWidth;
-            $('#overlayRight').addClass('overlayOpen').html('<img src="img/resources/arrowUp.gif" class="arrows arrowOpen"><p>' + data.category[entryIndex].subcategory[subentryIndex].subcategoryInfo + '</p>');
-
-            $.each(imgs, function (imgIndex) {
-                var categoryId = data.category[entryIndex].categoryId;
-                var subcategoryId = data.category[entryIndex].subcategory[subentryIndex].subcategoryId;
-                var imgName = data.category[entryIndex].subcategory[subentryIndex].imgs[imgIndex].imgName;
-                var imgId = data.category[entryIndex].subcategory[subentryIndex].imgs[imgIndex].imgId;
-                $('#imgButtons span').append('<button id="' + categoryId + subcategoryId + imgId + '" style="background: url(img/content/' + categoryId + subcategoryId + imgId + '.jpg) no-repeat center; background-size:contain;">' + imgName + '</button>').css({'width': buttonSpanWidth});
-                ;
-            });
-            $('#imgButtons span button').css({'width': subcatButtonWidth, 'margin': 0});
-            scroller();
+    //first load home
+    homeMenu();
+    //onclick home
+    $(document).on('click', '#home', function () {
+        homeMenu();
+    });
+    //Home Screen menu
+    function homeMenu() {
+        //Plant buttons
+        $('#main').html('').css('height', '60vh');
+        $('#bottomOverlay').html('');
+        $('#catinfo').css('height', '15vh');
+        $.each(data.category, function (i) {
+            $('#main').append('<button style="background:url(img/content/' + data.category[i].categoryImg + ') no-repeat; background-size:cover;" class="catBtns" id="' + data.category[i].categoryId + '">' + data.category[i].categoryName.split('<--name-->')[currentLang] + '</button>');
+            i++;
         });
+        $('#locationSlug').html('');
+        viewControl('bottomOpen');
+    }
+
+
+    //On hover cat info
+    $(document).on('mouseover', '.catBtns', function () {
+        var catId = this.id;
+        var catInfo = data.category[catId].categoryInfo;
+        var catName = data.category[catId].categoryName.split('<--name-->')[currentLang];
+        var catText = '';
+        if (loadedText.indexOf(catId) === -1) {
+
+            $.get('text/' + catInfo + '.txt', function (text) {
+                catText = text.split('<--lang-->')[currentLang];
+                $('#bottomOverlay').html(catText);
+                loadedText.push(catId, catName, catText);
+            });
+        }
+
+        else {
+            var catIndex = parseInt(loadedText.indexOf(catId)) + 2;
+            catText = loadedText[catIndex];
+            $('#bottomOverlay').html(catText);
+        }
+
     });
 
-//Thumbnail click
-    $(document).on('click', "#imgButtons button", function () {
+    //Cat click
+    $(document).on('click', '.catBtns', function () {
+        $('#main').html('');
+        $('#bottomOverlay').html('');
+        var parentIndex = parseInt(loadedText.indexOf(this.id));
+        $('#sideOverlay').html(loadedText[parentIndex + 1] + '<br>' + loadedText[parentIndex + 2]);
+        var catId = parseInt(this.id);
 
+        $.each(data.category[catId].subcategory, function (i) {
+            $('#main').append('<button style="background:url(img/content/' + data.category[catId].subcategory[i].subcategoryImg + ') no-repeat; background-size:cover;" class="subcatBtns" id="' + data.category[catId].subcategory[i].subcategoryId + '">' + data.category[catId].subcategory[i].subcategoryName.split('<--name-->')[currentLang] + '</button>');
+            i++;
+        });
+        viewControl('allOpen');
+    });
+
+
+
+    //On hover subcat info
+    $(document).on('mouseover', '.subcatBtns', function () {
+        var catIndex = this.id[0];
+        var subcatIndex = parseInt(this.id.slice(1, 3));
+        var subcatId = this.id;
+        var subcatInfo = data.category[catIndex].subcategory[subcatIndex].subcategoryInfo;
+        var subcatName = data.category[catIndex].subcategory[subcatIndex].subcategoryName.split('<--name-->')[currentLang];
+        var subcatText = '';
+        if (loadedText.indexOf(subcatId) === -1) {
+
+            $.get('text/' + subcatInfo + '.txt', function (text) {
+                subcatText = text.split('<--lang-->')[currentLang];
+                $('#bottomOverlay').html(subcatText);
+                loadedText.push(subcatId, subcatName, subcatText);
+            });
+        }
+
+        else {
+            var subcatIndex = parseInt(loadedText.indexOf(subcatId)) + 2;
+            subcatText = loadedText[subcatIndex];
+            $('#bottomOverlay').html(subcatText);
+        }
+    });
+
+//Subcat click
+    $(document).on('click', '.subcatBtns', function () {
+        $('#main').html('');
+        $('#bottomOverlay').html('');
+        var catIndex = this.id[0];
+        var subcatIndex = parseInt(this.id.slice(1, 3));
+        var subcatId = this.id;
+        var parentIndex = parseInt(loadedText.indexOf(subcatId));
+        $('#sideOverlay').html(loadedText[parentIndex + 1] + '<br>' + loadedText[parentIndex + 2]);
+
+
+        $.each(data.category[catIndex].subcategory[subcatIndex].imgs, function (i) {
+            $('#main').append('<button style="background:url(img/content/' + data.category[catIndex].subcategory[subcatIndex].imgs[i].imgImg + ') no-repeat; background-size:cover;" class="imgBtns" id="' + data.category[catIndex].subcategory[subcatIndex].imgs[i].imgId + '">' + data.category[catIndex].subcategory[subcatIndex].imgs[i].imgName.split('<--name-->')[currentLang] + '</button>');
+            i++;
+        });
+        viewControl('allOpen');
+    });
+
+    //On hover img info
+    $(document).on('mouseover', '.imgBtns', function () {
+        var catIndex = this.id[0];
+        var subcatIndex = parseInt(this.id.slice(1, 3));
+        var imgIndex = parseInt(this.id.slice(3, 5));
         var imgId = this.id;
-        var entryIndex = imgId[0];
-        var subentryIndex = parseInt(imgId.slice(-4, -2));
-        var imgIndex = parseInt(imgId.slice(-2));
-        console.log('entryIndex ' + entryIndex + ' subentryIndex ' + subentryIndex + ' imgIndex ' + imgIndex + 'imgId ' + imgId);
-        var imgInfo = data.category[entryIndex].subcategory[subentryIndex].imgs[imgIndex].imgInfo;
-        $('#imgSpace').css({'background': 'url(img/content/' + imgId + '.jpg) no-repeat center', 'background-size': 'contain'});
-        $('#overlayBottom').addClass('overlayOpen').html('<img src="img/resources/arrowDown.gif" class="arrows arrowOpen"><p>' + imgInfo + '</p>');
+        var imgInfo = data.category[catIndex].subcategory[subcatIndex].imgs[imgIndex].imgInfo;
+        var imgName = data.category[catIndex].subcategory[subcatIndex].imgs[imgIndex].imgName.split('<--name-->')[currentLang];
+        var imgText = '';
+        if (loadedText.indexOf(imgId) === -1) {
 
-    });
-    // Toggle overlays
-    $(document).on('click', ".arrows",
-            function ()
-            {
-                $(this).toggleClass('arrowClose').toggleClass('arrowOpen');
-                $(this).parent().toggleClass('overlayClose').toggleClass('overlayOpen');
-                $(this).siblings('p').toggleClass('hide');
+            $.get('text/' + imgInfo + '.txt', function (text) {
+                imgText = text.split('<--lang-->')[currentLang];
+                $('#bottomOverlay').html(imgText);
+                loadedText.push(imgId, imgName, imgText);
             });
+        }
+
+        else {
+            var imgIndex = parseInt(loadedText.indexOf(imgId)) + 2;
+            imgText = loadedText[imgIndex];
+            $('#bottomOverlay').html(imgText);
+        }
+    });
 
 
+    //Img click
+    $(document).on('click', '.imgBtns', function () {
+        $('.imgBtns').toggleClass('hide');
+        $('#' + this.id).toggleClass('hide').toggleClass('fullSize');
+    });
+
+//Meet Gal Akoka button
+    $(document).on('click', '#founder', function () {
+        window.open('http://galakoka.co.il/');
+    });
 
 
+    //contact media button
+    $(document).on('click', '#contact', function () {
+        $('#main').html('');
 
-    //scroll events
-    function scroller() {
-        $('.scroller').click(function () {
-            if (this.id === 'scrollLeft') {
-                $(this).parent().parent().animate({scrollLeft: '-=500'});
-                $('.scroller').animate({'left': '-=500'});
-
-            }
-            else {
-                $(this).parent().parent().animate({scrollLeft: '+=500'});
-                $('.scroller').animate({'width': '50%', 'left': '+=500'});
+        var contactArray = ['facebook', 'googleplus', 'linkedin', 'twitter', 'email', 'share', 'phone'];
+        var contactText = ['Friend on Facebook', 'Add to Google Circles', 'Connect in LinkedIn', 'Follow on Twitter',
+            'Send an Email', 'Share', 'Call us at +555 5555'];
+        var contactActions = ['https://www.facebook.com', 'https://plus.google.com/', 'https://www.linkedin.com',
+            'https://www.twitter.com', 'mailto:admin@akoka.co.il', '#', 'tel:5555555'];
+        $.each(contactArray, function (i) {
+            $('#main').append(
+                    '<div class="contact"><a href="' + contactActions[i] + '" id="' + contactArray[i] +
+                    '"> <img src="img/resources/' + contactArray[i] + '.png" alt="' + contactArray[i] + '"></a><br>' + contactText[i] + '</div>'
+                    );
+            if (contactArray[i] !== 'email' && contactArray[i] !== 'share' && contactArray[i] !== 'phone') {
+                $('#' + contactArray[i]).attr('target', '_blank');
             }
         });
+        $(document).on('click', '#share', function (e) {
+            alert('Share Panel');
+        });
+
+        viewControl('allClosed');
+    });
+
+
+    //language selection
+    $(document).on('click', '#langSelect', function () {
+        var langBtn = [];
+        for (var i = 0; i < lang.length; i++) {
+            langBtn.push('<button id="' + lang[i] + '" class="langBtns" style="background:url(img/resources/' + lang[i] + '.jpg) center no-repeat; background-size: contain;" >');
+        }
+        $('#main').html('').append(langBtn);
+        $('#bottomOverlay').html('');
+        viewControl('allClosed');
+        return loadedText = [];
+    });
+
+
+    $(document).on('click', '.langBtns', function () {
+        var chosenLang = this.id;
+        currentLang = lang.indexOf(chosenLang);
+
+        populateMenu();
+    });
+
+
+//Navigation Slug
+    var catIndexSlug;
+    var prevScreen;
+    $(document).on('click', '.catBtns, .subcatBtns, .imgBtns', function () {
+
+
+        if ($(this).hasClass('catBtns')) {
+            $('#locationSlug').html('Back to <a href="#" id="slugHome">Home</a> | ');
+            catIndexSlug = parseInt(loadedText.indexOf(this.id));
+            prevScreen = $('body').clone(true);
+        }
+        if ($(this).hasClass('subcatBtns')) {
+            $('#locationSlug').append('<a href="#" id="slugPrev">' + loadedText[catIndexSlug + 1] + '</a> | ');
+
+        }
+
+    });
+    $(document).on('click', '#slugHome', function () {
+        homeMenu();
+    });
+    $(document).on('click', '#slugPrev', function () {
+        $('body').html(prevScreen);
+                    prevScreen = $('body').clone(true);
+
+    });
+//View control
+
+    function viewControl(viewType) {
+        switch (viewType) {
+            case 'allClosed':
+                $('#main').removeAttr('style');
+                $('#bottomOverlay').removeAttr('style');
+                $('#sideOverlay').removeAttr('style');
+                break;
+            case 'bottomOpen':
+                $('#main').css({width: '100vw', height: '70vh'});
+                $('#bottomOverlay').css({width: '100vw', height: '25vh'});
+                $('#sideOverlay').removeAttr('style');
+                break;
+            case 'sideOpen':
+                $('#main').css({width: '70vw', height: '95vh'});
+                $('#bottomOverlay').removeAttr('style');
+                $('#sideOverlay').css({width: '30vw', height: '95vh'});
+                break;
+            case 'allOpen':
+                $('#main').css({width: '70vw', height: '70vh'});
+                $('#bottomOverlay').css({width: '100vw', height: '25vh'});
+                $('#sideOverlay').css({width: '30vw', height: '70vh'});
+                break;
+        }
+
     }
-}
-;
-
-
-
-
-
-
-
-
+});

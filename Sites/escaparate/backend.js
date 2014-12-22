@@ -85,12 +85,16 @@ $(function () {
 
 
         var currentCat = $("#category").val();
+        if (currentCat === null){
+            currentCat = 'New entry';
+        }
         var currentSubcat = $("#subcategory").val();
         var currentImg = $("#img").val();
         var currentType = this.id;
         var currentId = 0;
         var content =
-                '<h3>Enter a description</h3>' +
+                '<h3>Enter a description for '+ currentCat + '</h3>' +
+                '<p>Wrap links between <strong><--link--></strong> tags. <br> Example <--link--> category/subcategory/image name <--link--></p>' +
                 '<input type="button" id="back" value="Back">' +
                 '<form id="editAdd">' +
                 '<fieldset id="imgLoad">' +
@@ -199,13 +203,13 @@ $(function () {
                 $('<input type="text" id="' + lang[i] + 'Name" name="' + lang[i] + 'Name" placeholder="Entry Name">').insertBefore('#' + lang[i]);
             });
             if (entryType === 'subcatAdd') {
-                $('h3').html('Enter a description for subcategory under ' + data_en.category[parentId].categoryName);
+                $('h3').html('Enter a description for subcategory under ' + data_en.category[parentId].categoryName.split('<--name-->')[0]);
             }
             if (entryType === 'imgAdd') {
                 $('h3').html('Enter a description for image under '
-                        + data_en.category[parentId[0]].categoryName
+                        + data_en.category[parentId[0]].categoryName.split('<--name-->')[0]
                         + ' > '
-                        + data_en.category[parentId[0]].subcategory[parseInt(parentId.slice(1, 3))].subcategoryName);
+                        + data_en.category[parentId[0]].subcategory[parseInt(parentId.slice(1, 3))].subcategoryName.split('<--name-->')[0]);
             }
         }
         ;

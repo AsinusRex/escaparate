@@ -1,18 +1,32 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title></title>
+        <title>Akoka Gallery</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="styles.css" rel="stylesheet" type="text/css"/>
         <script src="lib/jquery-2.1.1.min.js" type="text/javascript"></script>
-       
+
         <script src="controller.js" type="text/javascript"></script>
     </head>
     <body>
         <div id="layoutWrapper">
-            <nav id="leftMenu"></nav>
+            <nav id="menu">                                
+                
+                <span id="menuBtn">
+                    <button id="home"></button>
+                    <button id="contact"></button>
+                    <button id="founder"></button>
+                    <button id="langSelect"></button>
+                </span>
+                <span id="locationSlug"></span>
+                <form>
+                    <input type="text" placeholder="Enter search term"><br>
+                </form>
+            </nav>
             <main id="main"></main>
+            <aside id="bottomOverlay"></aside>
+            <aside id="sideOverlay"></aside>
         </div>
     </body>
 </html>
