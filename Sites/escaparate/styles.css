@@ -10,7 +10,7 @@ body{
 }
 #menu{
     width: 100vw;
-    background: #fffbdc;
+    background: #000000;
     height: 5vh;
     display: inline-block;
     line-height: 5vh;
@@ -27,9 +27,9 @@ body{
     height: 3vh;
     width: 10vw;
     margin: 0 2vw;
-    -webkit-appearance: button;
-    -moz-appearance:button;
     text-align: center;
+    color : #ffffff;
+    background: #000000;
 
 }
 
@@ -37,48 +37,44 @@ body{
 #menu form{
     float: right;
     height: 3vh;
-    width: 10vw;
+    width: 12vw;
     margin: 0 2vw;
-    text-align: center;
 }
 
 #menu input{
     height: 2vh;
-    width: 10vw;
-    display: table-cell;
-
+    display: inline;
 }
 
 #main{
     height: 95vh;
     width: 100vw;
-    background: url(img/resources/akoka_gray.png) no-repeat center;
-    background-color: #fffbdc;
-    background-size: cover;
+    background-color: #000000;
     display: inline-block;
     text-align: center;
     margin: 0;
     float: left;
     overflow-x: hidden;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 
 
 .catBtns, .subcatBtns, .imgBtns{
-    display: table-cell;
-    height:48%;
-    width:18%;
+    display: block;
     margin:1%;
-    font: bold 32pt serif;
-    color:magenta;
+    font: 16pt serif;
+    color:white;
     text-align: center;
+    background: #000000;
+    clear: left;
 }
+
 
 #bottomOverlay{
     height: 0vh;
     width: 0vw;
-    background: #fffbdc;
+    background: #000000;
     display: inline-block;
     float: left;
 }
@@ -91,7 +87,7 @@ body{
 #sideOverlay{
     width: 0vh;
     height: 0vw;
-    background: #edd7b1;
+    background: #000000;
     display: inline-block;
     float: right;
 }
@@ -103,8 +99,10 @@ body{
 }
 
 .fullSize{
-    width:95%;
-    height:95%;
+    width:100%;
+    height:100%;
+    opacity:0.2;
+    margin: 0;
 }
 
 .contact{
@@ -114,7 +112,6 @@ body{
 }
 .contact a{
     -webkit-border-radius:100%;
-    -moz-border-radius:100%;
     border-radius: 100%;
     border:3px inset black;
     outline: none;
@@ -138,7 +135,17 @@ body{
 }
 
 #locationSlug{
-    background: white;
+    color: white;
     font: 12pt small-caps serif;
     margin: 0 5px;
 }
+
+aside{
+    color:white;
+}
+
+a:visited{
+    color:white;
+}
+
+

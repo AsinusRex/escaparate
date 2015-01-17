@@ -1,7 +1,5 @@
 <?php
 
-include 'ChromePhp.php';
-
 if (isset($_POST["nameA"])) {
     $name = $_POST['nameA'];
     $dir = "img/content/$name";
@@ -20,7 +18,6 @@ if (isset($_POST["delTxt"])) {
     for ($i = 0; $i < $delTxtLength; $i++) {
         $tempTxt = $delTxt[$i];
         $fullTxt = "text/$tempTxt";
-        ChromePhp::log($fullTxt);
         unlink($fullTxt);
     }
 }
@@ -31,7 +28,6 @@ if (isset($_POST["delImg"])) {
     for ($i = 0; $i < $delImgLength; $i++) {
         $tempImg = $delImg[$i];
         $fullImg = "img/content/$tempImg";
-        ChromePhp::log($fullImg);
         unlink($fullImg);
     }
 }

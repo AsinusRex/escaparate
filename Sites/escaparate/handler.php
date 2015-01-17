@@ -1,8 +1,5 @@
 <?php
 
-include 'ChromePhp.php';
-
-
 if (isset($_POST["textA"])){
 
 //Write text file

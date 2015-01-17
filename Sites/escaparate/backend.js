@@ -28,8 +28,13 @@ $(function () {
             i++;
         });
     });
+    //reload buttons
     $(document).on('click', '#reload', function () {
         location.reload(true);
+        ;
+    });
+    $(document).on('click', '#frontend', function () {
+       window.open('index.html', '_blank');
         ;
     });
 //Navigation Tree
@@ -85,7 +90,7 @@ $(function () {
 
 
         var currentCat = $("#category").val();
-        if (currentCat === null){
+        if (currentCat === null) {
             currentCat = 'New entry';
         }
         var currentSubcat = $("#subcategory").val();
@@ -93,7 +98,7 @@ $(function () {
         var currentType = this.id;
         var currentId = 0;
         var content =
-                '<h3>Enter a description for '+ currentCat + '</h3>' +
+                '<h3>Enter a description for ' + currentCat + '</h3>' +
                 '<p>Wrap links between <strong><--link--></strong> tags. <br> Example <--link--> category/subcategory/image name <--link--></p>' +
                 '<input type="button" id="back" value="Back">' +
                 '<form id="editAdd">' +
@@ -179,7 +184,7 @@ $(function () {
                     var imgIndex = parseInt(currentId.slice(3, 5));
                     if (currentIdG.length === 1) {
                         langString = data_en.category[entryIndex].categoryName.split('<--name-->');
-                                            }
+                    }
                     else if (currentIdG.length === 3) {
                         langString = data_en.category[entryIndex].subcategory[subentryIndex].subcategoryName.split('<--name-->');
                     }
@@ -327,6 +332,9 @@ $(function () {
                 cache: false,
                 success: function (result) {
                     console.log(result);
+                },
+                error: function (result) {
+                    alert('error in json');
                 }
             });
             //Delete text and img files
@@ -338,7 +346,7 @@ $(function () {
                     console.log('file deleted');
                 },
                 error: function () {
-                    console.log('file not deleted');
+                    alert('file not deleted');
                 }
             });
             return location.reload(true);
@@ -350,19 +358,19 @@ $(function () {
         e.preventDefault();
     });
 
-  
+
 // Submit function
     $(document).on('click', '#entryInfoSubmit', function (e) {
 
         //Prepare variables
         var currentIndex = String(data_en.category.length);
-        console.log(data_en.category.length);
+
         if (data_en.category.length > 9) {
             alert('Max number of categories reached');
             return false;
         }
-       
-            
+
+
         // check number of articles and imgs for naming
         var articleA = Math.random().toString(36).substr(2, 5);
         $.get('text/filelist.txt', function (data) {
@@ -392,13 +400,13 @@ $(function () {
             else if (imgA === '' && currentIdG.length === 5) {
                 imgA = data_en.category[currentIdG[0]].subcategory[parseInt(currentIdG.slice(1, 3))].imgs[parseInt(currentIdG.slice(3, 5))].imgImg;
             }
- //Check pic field
-           if ($('#imgBrw').val() === '' && imgA === ''){
-               alert('Error:\nNo image file for this category, please add one');
-               return;
-           }
+            //Check pic field
+            if ($('#imgBrw').val() === '' && imgA === '') {
+                alert('Error:\nNo image file for this category, please add one');
+                return;
+            }
             var newExt = imgA;
-            console.log('new Extension ' + newExt);
+
             imgA = String(articleA + '.' + imgA);
 
             var textA = '';
@@ -421,9 +429,9 @@ $(function () {
                 nameA += name;
                 i++;
             });
-            console.log(nameA);
+
             var json_en = '';
-            console.log(entryType);
+
             switch (entryType) {
 
                 case 'catEdit':
@@ -454,7 +462,6 @@ $(function () {
                     var tempSubcat = [];
                     for (var i = 0; i < data_en.category[currentIdG].subcategory.length; i++) {
                         tempSubcat.push(data_en.category[currentIdG].subcategory[i]);
-                        console.log(tempSubcat);
                     }
                     json_en = {
                         "categoryName": nameA,
@@ -642,10 +649,13 @@ $(function () {
                         contentType: false,
                         success: function () {
                             console.log('img copied');
+                        },
+                        error: function () {
+                            alert('img copy failed');
                         }
                     });
                 } else {
-                    alert('Not a valid image!');
+                    alert('Not a valid image');
                 }
             } else {
                 console.log('No image change');
@@ -661,12 +671,16 @@ $(function () {
                 cache: false,
                 success: function (result) {
                     console.log(result);
+                    return location.reload(true);
+                },
+                error: function () {
+                    alert('file copy failed');
                 }
             });
-            return location.reload(true);
             ;
         }
         ;
+        return false;
     });
 });
 

@@ -101,3 +101,7 @@ h1{
     border: none;
 
 }
+
+#loadScreen {
+    text-align: center;
+}
