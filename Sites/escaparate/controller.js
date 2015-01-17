@@ -154,9 +154,7 @@ $(document).on('click', '#introVid', function () {
                 i++;
                
             });
-//           if( $('.subcatBtns').length >= 10){
-//               $('#main').css('overflow-y', 'scroll');
-//           }
+
             viewControl('allOpen');
         });
         //On hover subcat info
