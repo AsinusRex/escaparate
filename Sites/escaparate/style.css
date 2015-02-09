@@ -1,0 +1,312 @@
+body, html {
+    margin: 0;
+    overflow: hidden;
+    background:#110011;
+}
+#layoutWrapper{
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    display: inline-table;
+    overflow: hidden;
+    z-index: -1;
+    background-size: contain !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important; 
+}
+
+
+
+#logoLang {
+    width: 15vw;
+    margin:5vh auto;
+    display: table-cell;
+}
+
+#langlist{
+
+    display: block;
+    margin: 5vh auto;
+    text-align: center;
+}
+
+.langBtn{
+    border: none;
+    display: table-cell;
+    background: none;
+    font:lighter 16pt/16pt Arial;
+    margin: 2vh auto;
+    outline: none;
+}
+
+.langBtn:hover{
+    cursor: pointer;
+    color:graytext;
+    text-decoration: underline;
+}
+
+
+.hide{
+    display: none !important;
+}
+
+
+#main{
+    width: 85vw;
+    height: 100%;
+    overflow-y: scroll;
+    position: absolute;
+    right:-2vw;
+    padding-right: 2vw;
+    z-index: 25;
+}
+
+#nav{
+    width: 15vw;
+    height: 100vh;
+    background: #110011;
+    opacity: 0.2;
+    float: left;
+    z-index: 20;
+
+    overflow: auto;
+}
+
+#menuBtns{
+    width: 15vw;
+
+}
+#footer{
+    width: 100vw;
+    height: 5vh;
+    position:absolute;
+    bottom:0;
+
+    z-index: 25;
+
+}
+
+#footer button{
+    display: inline;
+    float: right;
+    height: 4vh;
+    width: 10vw;
+    text-align: center;
+    color : white;
+    opacity: 0.2;
+    background: #110011;
+    border:  none;
+    border-right: 1px solid #ffffff;
+    border-bottom: 1px solid #ffffff;
+    outline:none;
+    z-index: 30;
+
+    transition: opacity .25s ease-in-out;
+    -moz-transition: opacity .25s ease-in-out;
+    -webkit-transition: opacity 1s ease-in-out;
+
+}
+
+#footer button:first-of-type{margin-right: 1vw;}
+#footer button:hover{
+
+    opacity: 1;
+}
+
+#searchTerm{
+    margin-right: 1vw;
+    display: inline;
+    float: right;
+    height: 3vh;
+    width: 20vw;
+    background: whitesmoke;
+}
+
+video{
+    z-index: 0;
+    position: absolute;
+    display: table-cell;
+    width:100vw !important;
+    height: auto !important;
+
+
+
+}
+.catSpan{
+    text-align: right;
+    width: 100%;
+    display: inline-table;
+}
+.catBtns, .subcatBtns{
+    border: none;
+    color: white;
+    background: none;
+    outline: none;
+    display: block;
+    margin: 5px;
+    z-index: 5;
+    cursor: pointer;
+}
+.catBtns:hover, .subcatBtns:hover{
+    text-shadow: 1px 1px 1px white;
+}
+
+
+#logoMenu{
+    width: 50%;
+    margin: 10px auto 10% auto;
+    display: table-cell;
+
+    background: white;
+    border: 1px outset white;
+    filter: invert(100%);
+    -webkit-filter: invert(100%);
+    transition-duration: 1s;
+}
+
+#logoMenu:hover{
+
+    filter: invert(0%);
+    -webkit-filter: invert(0%);
+}
+
+
+.entryInfo{
+    margin-left:5vw;
+    margin-top:10vh;
+    display: inline-block;
+    color: goldenrod;
+}
+
+.entryInfo a{
+    color: goldenrod;
+    font-weight: bold;
+}
+.galleryBack{
+    bottom: 0;
+    background: url(img/resources/arrowUp.gif);
+}
+
+.galleryBtn{
+    top:0;
+    background: url(img/resources/arrowDown.gif);
+}
+.galleryBtn, .galleryBack{
+    width: 5vw;
+    height: 5vh;
+    right:2vw;
+    display: inline;
+    position: fixed;
+    border: none;
+    color:goldenrod;
+    outline: none;
+    -webkit-animation: inversion 3s; 
+    animation: inversion 3s;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-direction: alternate;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+}
+
+
+
+@-webkit-keyframes inversion {
+    from{ filter: invert(100%);
+          -webkit-filter: invert(100%);}
+    to{ filter: invert(0%);
+        -webkit-filter: invert(0%);}
+
+}
+@keyframes inversion {
+    from{ filter: invert(100%);
+          -webkit-filter: invert(100%);}
+    to{ filter: invert(0%);
+        -webkit-filter: invert(0%);}
+}
+
+.contact{
+    width: 8vw;
+    display: inline-block;
+    margin: 2vw;
+    vertical-align: top;
+
+}
+.contact a{
+    -webkit-border-radius:100%;
+    border-radius: 100%;
+    border:3px inset black;
+    outline: none;
+    background: black;
+
+    display: inline-block;
+    text-decoration: none;
+}
+.contact img{
+    margin: 0;
+    padding: 0;
+    display: block;
+    width: 100%;
+}
+
+.contact a:hover{
+    box-shadow: 0 0 10px blue;
+}
+.contact a:active{
+    border:0;
+}
+
+.results{
+    color: goldenrod;
+}
+
+.entryGalleryDiv {
+    width: 90vw;
+    display: block;
+    height: 80vh;
+    margin: 0 auto;
+color: wheat;
+}
+.entryGalleryDiv:first-of-type{
+    margin-top: 10vh;
+}
+.entryGalleryDiv:nth-child(even){
+    float: left;
+    margin-left: 2vw;
+}
+.entryGalleryDiv:nth-child(odd){
+    float: right;
+    margin-right: 2vw;
+}
+
+.entryGalleryDiv h1{
+    color:gold;
+    text-align: center;
+}
+
+.entryGalleryBtns{
+    width: 60vw;
+    height: 60vh;
+    vertical-align: middle;
+    margin: auto 0;
+    line-height: 40vh;
+    float: inherit;
+    background: none;
+    border: none;
+    outline: none;
+    cursor: pointer;
+   
+}
+
+.superSize {
+    width: 100vw;
+    height: 100vh;
+    background: #FFF;
+    display: block;
+    position: absolute;
+    margin: 0 !important;
+    top:0;
+    left: 0;
+}

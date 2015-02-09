@@ -99,7 +99,7 @@ $(function () {
         var currentId = 0;
         var content =
                 '<h3>Enter a description for ' + currentCat + '</h3>' +
-                '<p>Wrap links between <strong><--link--></strong> tags. <br> Example <--link--> category/subcategory/image name <--link--></p>' +
+                '<p>Wrap internal links between <strong><--link--></strong> tags.  <br> Example <--link--> entry name <--link--><br>For external link and hierarchy use HTML tags.</p>' +
                 '<input type="button" id="back" value="Back">' +
                 '<form id="editAdd">' +
                 '<fieldset id="imgLoad">' +
