@@ -1,7 +1,7 @@
 body, html {
     margin: 0;
     overflow: hidden;
-    background:#110011;
+    background:#ffffff;
 }
 #layoutWrapper{
     width: 100vw;
@@ -10,17 +10,18 @@ body, html {
     display: inline-table;
     overflow: hidden;
     z-index: -1;
-    background-size: contain !important;
+    background-size: cover !important;
     background-repeat: no-repeat !important;
-    background-position: center !important; 
+    background-position: right !important; 
 }
 
 
 
-#logoLang {
+#logoLang{
     width: 15vw;
-    margin:5vh auto;
-    display: table-cell;
+    margin:30vh auto 10vh auto;
+    display: block;
+
 }
 
 #langlist{
@@ -48,28 +49,36 @@ body, html {
 
 .hide{
     display: none !important;
+
 }
 
 
 #main{
-    width: 85vw;
+    width: 102vw;
     height: 100%;
     overflow-y: scroll;
     position: absolute;
     right:-2vw;
     padding-right: 2vw;
     z-index: 25;
+    -webkit-transition: width 1s ease-in-out;
+    -moz-transition: width 1s ease-in-out;
+    -o-transition: width 1s ease-in-out;
+    transition: width 1s ease-in-out;
 }
 
 #nav{
-    width: 15vw;
+    width: 0;
     height: 100vh;
     background: #110011;
     opacity: 0.2;
     float: left;
     z-index: 20;
-
-    overflow: auto;
+    overflow: hidden;
+    -webkit-transition: width 1s ease-in-out;
+    -moz-transition: width 1s ease-in-out;
+    -o-transition: width 1s ease-in-out;
+    transition: width 1s ease-in-out;
 }
 
 #menuBtns{
@@ -152,19 +161,29 @@ video{
 }
 
 
-#logoMenu{
-    width: 50%;
-    margin: 10px auto 10% auto;
+#logoMenu , #homeGallery {
+    width: 7vw;
+    height: 10vh;
+    margin: 2vh 4vw 5vh 4vw;
     display: table-cell;
-
-    background: white;
-    border: 1px outset white;
     filter: invert(100%);
     -webkit-filter: invert(100%);
+    border: 1px outset white;
+    outline:none;
     transition-duration: 1s;
+    background-image: url(img/resources/logo.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    background-color: white;
 }
 
-#logoMenu:hover{
+#homeGallery {
+    position: absolute;
+    z-index: 10000000; 
+}
+
+#logoMenu:hover, #homeGallery:hover{
 
     filter: invert(0%);
     -webkit-filter: invert(0%);
@@ -172,33 +191,53 @@ video{
 
 
 .entryInfo{
+    position: absolute;
+    width: 33vw;
+    padding: 5px;
+    text-indent: 10px;
+    text-align: justify;
+    top:10vh;
+    left: 33vw;
     margin-left:5vw;
     margin-top:10vh;
     display: inline-block;
     color: goldenrod;
+    background: rgba(0, 0, 0, 0.5);
 }
 
 .entryInfo a{
     color: goldenrod;
     font-weight: bold;
 }
+
+.entryInfo h1{
+    color: gold;
+    text-align: center;
+}
+
+.returnToOrigin{
+    background: url(img/resources/animArrowUp.gif) no-repeat;
+    top:0;
+
+}
 .galleryBack{
-    bottom: 0;
-    background: url(img/resources/arrowUp.gif);
+    background: url(img/resources/animArrowUp.gif) no-repeat;
+    top:0;
+
 }
 
 .galleryBtn{
-    top:0;
-    background: url(img/resources/arrowDown.gif);
+    bottom:3vh;
+    background: url(img/resources/animArrowDown.gif) no-repeat;
+
 }
-.galleryBtn, .galleryBack{
-    width: 5vw;
-    height: 5vh;
-    right:2vw;
-    display: inline;
+.galleryBtn, .galleryBack, .returnToOrigin{
+    width: 10vw;
+    height: 3vh;
+    left:47vw;
     position: fixed;
     border: none;
-    color:goldenrod;
+    color:white;
     outline: none;
     -webkit-animation: inversion 3s; 
     animation: inversion 3s;
@@ -206,12 +245,18 @@ video{
     -webkit-animation-direction: alternate;
     animation-iteration-count: infinite;
     animation-direction: alternate;
-
+    vertical-align: top;
     background-size: 100% 100%;
     background-repeat: no-repeat;
+    opacity: 0.25;
+    z-index: 20000;
 }
 
-
+.galleryBtn:hover, .galleryBack:hover{
+    opacity:1;
+    -webkit-animation-play-state: paused; 
+    animation-play-state: paused;
+}
 
 @-webkit-keyframes inversion {
     from{ filter: invert(100%);
@@ -226,6 +271,29 @@ video{
     to{ filter: invert(0%);
         -webkit-filter: invert(0%);}
 }
+
+.gallerySpan{
+
+    float: left;
+    clear: left;
+    border-bottom: 1px solid goldenrod;
+    color: goldenrod;
+    display: block;
+    z-index: 200;
+    cursor: pointer;
+}
+
+
+#spanScroller{
+    top: 2vh;
+    right: 3vw;
+    width: 12vw;
+    height: 100vh;
+    position: fixed;
+    z-index: 10;
+
+}
+
 
 .contact{
     width: 8vw;
@@ -263,32 +331,41 @@ video{
 }
 
 .entryGalleryDiv {
-    width: 90vw;
-    display: block;
+    width: 70vw;
+    display: inline-block;
     height: 80vh;
-    margin: 0 auto;
-color: wheat;
+    margin: 0 10vw;
+    position: relative;
+
+}
+
+.entryGalleryDiv:hover{
+
 }
 .entryGalleryDiv:first-of-type{
     margin-top: 10vh;
 }
-.entryGalleryDiv:nth-child(even){
-    float: left;
-    margin-left: 2vw;
-}
-.entryGalleryDiv:nth-child(odd){
-    float: right;
-    margin-right: 2vw;
-}
+
 
 .entryGalleryDiv h1{
     color:gold;
-    text-align: center;
-}
+    top: 5vh;
+    left: 20vw;
+    z-index: 50;
+    position: absolute;
 
+
+}
+.entryGalleryDiv p{
+    position: absolute;
+    color: goldenrod;
+    top: 20vh;
+    z-index: 50;
+
+}
 .entryGalleryBtns{
-    width: 60vw;
-    height: 60vh;
+    width: 70vw;
+    height: 80vh;
     vertical-align: middle;
     margin: auto 0;
     line-height: 40vh;
@@ -297,7 +374,8 @@ color: wheat;
     border: none;
     outline: none;
     cursor: pointer;
-   
+    position: absolute;
+    transition-duration: 1s;
 }
 
 .superSize {
@@ -310,3 +388,21 @@ color: wheat;
     top:0;
     left: 0;
 }
+
+#loaderDiv{
+    height: 200px;
+    width: 200px;
+    display: block;
+    margin: 40vh auto;
+    background: url(img/resources/loadgo.gif) no-repeat center;
+}
+
+
+#loaderDiv img{
+    -webkit-animation:spin 1s linear infinite;
+    -moz-animation:spin 1s linear infinite;
+    animation:spin 1s linear infinite;
+}
+@-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
+@-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
+@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }

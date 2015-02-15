@@ -31,4 +31,10 @@ if (isset($_POST["delImg"])) {
         unlink($fullImg);
     }
 }
+
+if (isset($_POST["pdfA"])) {
+    $name = $_POST['pdfA'];
+    $dir = "pdf/$name";
+    move_uploaded_file($_FILES["pdf"]["tmp_name"], $dir);
+};
 ?>

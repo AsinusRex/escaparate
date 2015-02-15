@@ -8,13 +8,12 @@ body{
 }
 
 form {
-    width: 50%;
     margin: 0 auto;
     display: inline-table;
 }
 textarea{
     display: block;
-    width: 70%;
+    width: 100%;
     resize: none;
     outline: none;
     margin: 0 ;
@@ -23,8 +22,8 @@ textarea{
 }
 
 label{
-    display: block;
-    text-align: left;
+    display: inline-block;
+    float: left;
     margin: 1vh;
 }
 #container{
@@ -66,8 +65,10 @@ h1{
 }
 #editAdd button{
     height: 50px;
-    width: 25%;
-    margin: 10px;
+    width: 100%;
+    font-size: 1vw;
+    font-variant: small-caps;
+    font-weight: bold;
 }
 
 #editAdd img{
@@ -83,9 +84,21 @@ h1{
 
 
 #editAdd input[type='text']{
-    display: block;
+    display: inline-block;
     margin: 1vh 1vw;
+    float: left;
 }
+
+#entryInfoSubmit{
+    margin: 50px 0 10px 0;
+    background:green;
+}
+
+#entryDelete{
+    background: red;
+    color:white;
+}
+
 #catInfoSubmit{
     margin-top: 2vh;
     width:20%;
@@ -95,13 +108,26 @@ h1{
 #imgLoad {
     float:left;
     display: inline-block;
-    margin: 15% 2%;
-    width: 20%;
-    height: 50vh;
+    margin: 0 2%;
+    width: 20vw;
+   
     border: none;
 
 }
 
+
 #loadScreen {
     text-align: center;
+}
+
+.counters + p{
+   display: inline;
+float:left;
+   
+}
+
+.inputSpans{
+    display: block;
+    float: right;
+    width: 60vw;
 }

@@ -34,7 +34,7 @@ $(function () {
         ;
     });
     $(document).on('click', '#frontend', function () {
-       window.open('index.html', '_blank');
+        window.open('index.html', '_blank');
         ;
     });
 //Navigation Tree
@@ -84,7 +84,24 @@ $(function () {
             $('#imgArea *').removeClass('hide');
         });
     }
+//Limit textarea input
+    $(document).on('keyup', '.articles', function () {
+        var targetArea = $('#' + this.id);
+        var targetCounter = $('#' + this.id + 'countdown');
+        var areaText = targetArea.val();
+        var currentTextLength = areaText.length;
 
+        limitText(targetArea, targetCounter, currentTextLength, areaText);
+    });
+    function limitText(targetArea, targetCounter, currentTextLength, areaText) {
+
+        var limitNum = 1200;
+        if (currentTextLength > limitNum) {
+            targetArea.val(areaText.substring(0, limitNum));
+        } else {
+            targetCounter.attr('value', limitNum - currentTextLength);
+        }
+    }
 // Editing functions
     $(document).on('click', '.edit', function () {
 
@@ -97,24 +114,27 @@ $(function () {
         var currentImg = $("#img").val();
         var currentType = this.id;
         var currentId = 0;
+        var langName = ['English', 'French', 'Russian', 'Hebrew'];
+        var textareas = [];
+        $.each(lang, function (i) {
+            textareas += '<span class="inputSpans"><br><label for="' + lang[i] + '">' + langName[i] + '</label><textarea class="articles" id="' + lang[i] + '" name="' + lang[i] + 'Text" rows="8" placeholder="Entry info" ></textarea>' + '<input readonly type="text" id="' + lang[i] + 'countdown" class="counters" size="5" value=""><p>Characters Left</p></span>';
+
+            i++;
+        });
         var content =
                 '<h3>Enter a description for ' + currentCat + '</h3>' +
                 '<p>Wrap internal links between <strong><--link--></strong> tags.  <br> Example <--link--> entry name <--link--><br>For external link and hierarchy use HTML tags.</p>' +
                 '<input type="button" id="back" value="Back">' +
                 '<form id="editAdd">' +
                 '<fieldset id="imgLoad">' +
+                '<br><label for="tags">Tags for Search (Separate with commas)</label>' +
+                '<input id="tags" type="text" size="35"><br><br>' +
+                '<label for="imgObj">Entry Image</label>' +
                 '<img id="imgObj" alt="akoka"><br>' +
-                '<input type="file" id="imgBrw" name="imgBrw"></fieldset>' +
-                '<br><label for="en">English</label>' +
-                '<textarea id="en" name="enText" rows="8" placeholder="Entry info"></textarea>' +
-                '<br><label for="fr">French</label>' +
-                '<textarea id="fr" name="frText" rows="8" placeholder="Entry info"></textarea>' +
-                '<br><label for="ru">Russian</label>' +
-                '<textarea id="ru" name="ruText" rows="8" placeholder="Entry info"></textarea>' +
-                '<br><label for="he">Hebrew</label>' +
-                '<textarea id="he" name="heText" rows="8" placeholder="Entry info"></textarea>' +
+                '<input type="file" id="imgBrw" name="imgBrw">' +
                 '<br><button id="entryInfoSubmit">Submit</button>' +
-                '<button id="entryDelete">Delete</button>' +
+                '<button id="entryDelete">Delete</button></fieldset>' +
+                textareas +
                 '</form>'
                 ;
         switch (currentType) {
@@ -130,6 +150,7 @@ $(function () {
             case 'imgEdit':
                 currentId = $("#img").children(":selected").attr("id");
                 entryEdit(currentType, currentId);
+                $('<label for="pdfObj">Include PDF</label><input type="file" id="pdfBrw" name="pdfBrw">').insertAfter('#tags');
                 break;
             case 'catAdd':
                 entryAdd(currentType);
@@ -141,6 +162,7 @@ $(function () {
             case 'imgAdd':
                 parentId = $("#subcategory").children(":selected").attr("id");
                 entryAdd(currentType, parentId);
+                $('<label for="pdfObj">Include PDF</label><input type="file" id="pdfBrw" name="pdfBrw">').insertAfter('#tags');
                 break;
         }
         if (currentSubcat === null) {
@@ -157,16 +179,22 @@ $(function () {
             $('#container').html('').append(content);
             var entryImg = '';
             var entryInfo = '';
+            var entryName = '';
+
             if (currentType === 'catEdit') {
                 entryImg = data_en.category[currentId].categoryImg;
                 entryInfo = data_en.category[currentId].categoryInfo;
             } else if (currentType === 'subcatEdit') {
                 entryImg = data_en.category[currentId[0]].subcategory[parseInt(currentId.slice(1, 3))].subcategoryImg;
                 entryInfo = data_en.category[currentId[0]].subcategory[parseInt(currentId.slice(1, 3))].subcategoryInfo;
+                entryName = data_en.category[currentId[0]].subcategory[parseInt(currentId.slice(1, 3))].subcategoryName.split('<--name-->')[0];
+                $('h3').html('Enter a description for subcategory ' + entryName);
             }
             else if (currentType === 'imgEdit') {
                 entryImg = data_en.category[currentId[0]].subcategory[parseInt(currentId.slice(1, 3))].imgs[parseInt(currentId.slice(3, 5))].imgImg;
                 entryInfo = data_en.category[currentId[0]].subcategory[parseInt(currentId.slice(1, 3))].imgs[parseInt(currentId.slice(3, 5))].imgInfo;
+                entryName = data_en.category[currentId[0]].subcategory[parseInt(currentId.slice(1, 3))].imgs[parseInt(currentId.slice(3, 5))].imgName.split('<--name-->')[0];
+                $('h3').html('Enter a description for image ' + entryName);
             }
             $('#imgObj').attr('src', 'img/content/' + entryImg);
             $.get('text/' + entryInfo + '.txt', function (data) {
@@ -182,20 +210,25 @@ $(function () {
                     var entryIndex = currentId[0];
                     var subentryIndex = parseInt(currentId.slice(1, 3));
                     var imgIndex = parseInt(currentId.slice(3, 5));
+                    var searchTerms = '';
                     if (currentIdG.length === 1) {
                         langString = data_en.category[entryIndex].categoryName.split('<--name-->');
+                        searchTerms = data_en.category[entryIndex].searchTerms;
                     }
                     else if (currentIdG.length === 3) {
                         langString = data_en.category[entryIndex].subcategory[subentryIndex].subcategoryName.split('<--name-->');
+                        searchTerms = data_en.category[entryIndex].subcategory[subentryIndex].searchTerms;
                     }
                     else if (currentIdG.length === 5) {
                         langString = data_en.category[entryIndex].subcategory[subentryIndex].imgs[imgIndex].imgName.split('<--name-->');
+                        searchTerms = data_en.category[entryIndex].subcategory[subentryIndex].imgs[imgIndex].searchTerms;
                     }
                     else {
                         console.log('there is something wrong with the indexing');
                     }
                     langName = langString[i];
                     $('<input type="text" id="' + lang[i] + 'Name"  name="' + lang[i] + 'Name" value="' + langName + '">').insertBefore('#' + lang[i]);
+                    $('#tags').val(searchTerms);
                     i++;
                 });
             });
@@ -220,6 +253,9 @@ $(function () {
         ;
         return entryType;
     });
+
+
+
 //Back function
     $(document).on('click', '#back', function () {
         location.reload(true);
@@ -430,10 +466,15 @@ $(function () {
                 i++;
             });
 
+            var pdfFlag = 'off';
+            if ($('#pdfBrw').length > 0 && $('#pdfBrw').val() !== '') {
+                pdfFlag = 'on';
+            }
+
             var json_en = '';
+            var searchTerms = $('#tags').val();
 
             switch (entryType) {
-
                 case 'catEdit':
                     articleA = data_en.category[currentIdG].categoryInfo;
                     imgA = data_en.category[currentIdG].categoryImg;
@@ -468,6 +509,7 @@ $(function () {
                         "categoryId": currentIdG,
                         "categoryInfo": articleA,
                         "categoryImg": imgA,
+                        "searchTerms": searchTerms,
                         "subcategory": tempSubcat
                     };
 
@@ -504,6 +546,7 @@ $(function () {
                             }
                         });
                     }
+
                     var tempImg = [];
                     for (var i = 0;
                             i < data_en.category[currentIdG[0]].subcategory[parseInt(currentIdG.slice(1, 3))].imgs.length;
@@ -516,6 +559,7 @@ $(function () {
                         "subcategoryId": currentIdG,
                         "subcategoryInfo": articleA,
                         "subcategoryImg": imgA,
+                        "searchTerms": searchTerms,
                         "imgs": tempImg
                     };
                     data_en.category[currentIdG[0]].subcategory[parseInt(currentIdG.slice(1, 3))] = json_en;
@@ -551,12 +595,14 @@ $(function () {
                             }
                         });
                     }
-
+                   
                     json_en = {
                         "imgName": nameA,
                         "imgId": currentIdG,
                         "imgInfo": articleA,
-                        "imgImg": imgA
+                        "searchTerms": searchTerms,
+                        "imgImg": imgA,
+                        "pdfFlag": pdfFlag
                     };
                     data_en.category[currentIdG[0]].subcategory[parseInt(currentIdG.slice(1, 3))].imgs[parseInt(currentIdG.slice(3, 5))] = json_en;
                     console.log(json_en);
@@ -571,6 +617,7 @@ $(function () {
                         "categoryName": nameA,
                         "categoryId": currentIndex,
                         "categoryInfo": articleA,
+                        "searchTerms": searchTerms,
                         "categoryImg": imgA,
                         "subcategory": []
                     };
@@ -593,6 +640,7 @@ $(function () {
                         "subcategoryName": nameA,
                         "subcategoryId": currentIndex,
                         "subcategoryInfo": articleA,
+                        "searchTerms": searchTerms,
                         "subcategoryImg": imgA,
                         "imgs": []
                     };
@@ -619,7 +667,9 @@ $(function () {
                         "imgName": nameA,
                         "imgId": currentIndex,
                         "imgInfo": articleA,
-                        "imgImg": imgA
+                        "searchTerms": searchTerms,
+                        "imgImg": imgA,
+                        "pdfFlag": pdfFlag
                     };
                     var tempData = [];
                     for (var i = 0; i < data_en.category.length; i++) {
@@ -634,6 +684,34 @@ $(function () {
                     break;
             }
 
+ if (pdfFlag === 'on') {
+            var input = document.getElementById("pdfBrw");
+            file = input.files[0];
+            if (file !== undefined) {
+                formData = new FormData();
+                if (file.type === 'application/pdf') {
+                    formData.append("pdf", file);
+                    formData.append("pdfA", articleA + '.pdf');
+                    $.ajax({
+                        url: "file_handler.php",
+                        type: "POST",
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function () {
+                            console.log('PDF copied');
+                        },
+                        error: function () {
+                            alert('PDF copy failed');
+                        }
+                    });
+                } else {
+                    alert('Not a valid PDF');
+                }
+            } else {
+                console.log('No PDF change');
+            }             
+                    }
             var input = document.getElementById("imgBrw");
             file = input.files[0];
             if (file !== undefined) {
