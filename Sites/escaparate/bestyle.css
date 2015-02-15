@@ -1,5 +1,5 @@
 body{
-    background:#000066;
+    background:#000022;
     color:#ffcc39;
 }
 
@@ -91,11 +91,13 @@ h1{
 
 #entryInfoSubmit{
     margin: 50px 0 10px 0;
-    background:green;
+    background:#002200;
+        color:white;
+
 }
 
 #entryDelete{
-    background: red;
+    background: #220000;
     color:white;
 }
 

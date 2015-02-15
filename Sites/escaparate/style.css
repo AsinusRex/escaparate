@@ -122,7 +122,7 @@ body, html {
     opacity: 1;
 }
 
-#searchTerm{
+#searchTerm, #noResults{
     margin-right: 1vw;
     display: inline;
     float: right;
@@ -161,7 +161,7 @@ video{
 }
 
 
-#logoMenu , #homeGallery {
+#logoMenu , #homeGallery, #searchHome {
     width: 7vw;
     height: 10vh;
     margin: 2vh 4vw 5vh 4vw;
@@ -406,3 +406,14 @@ video{
 @-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
 @-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
 @keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
+
+
+.searchMatch{
+    margin: 1vh 5vw;
+    height: 20vh;
+    width: 20vh;
+    display: inline-block;
+    background: rgba(255,255, 255, 0.5);
+    outline: none;
+}
+

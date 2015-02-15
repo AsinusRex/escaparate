@@ -1,0 +1,11 @@
+input, p, h1, span{
+    direction:rtl ;
+}
+
+.entryGalleryDiv h1{
+    right: 20vw;
+}
+
+.entryGalleryDiv p {
+     right: 1vw;
+}

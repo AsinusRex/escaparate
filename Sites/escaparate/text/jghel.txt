@@ -1,1 +1,0 @@
-This is a link inside the <a href="https://www.google.com" target="_BLANK">Info_EN-1</a> info text.<--lang-->Info_FR-1<--lang-->Info_RU-1<--lang-->Info_HE-1
