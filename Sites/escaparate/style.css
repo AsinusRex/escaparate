@@ -409,11 +409,19 @@ video{
 
 
 .searchMatch{
-    margin: 1vh 5vw;
-    height: 20vh;
-    width: 20vh;
-    display: inline-block;
-    background: rgba(255,255, 255, 0.5);
-    outline: none;
+    color:blue;
+    text-decoration: underline;
+    font-size: 14pt;
+    cursor: pointer;
+    margin: 5vh 5vw;
 }
 
+.relatedTerms{
+    color:blue;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+h2{
+    text-align: center;
+}

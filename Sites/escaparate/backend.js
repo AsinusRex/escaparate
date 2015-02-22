@@ -123,11 +123,11 @@ $(function () {
         });
         var content =
                 '<h3>Enter a description for ' + currentCat + '</h3>' +
-                '<p>Wrap internal links between <strong><--link--></strong> tags.  <br> Example <--link--> entry name <--link--><br>For external link and hierarchy use HTML tags.</p>' +
+                '<p>Wrap internal links between <strong>&lt;a&gt;</strong> tags with class relatedTerms.  <br> Example &lt;a class="relatedTerms"&gt; Link &lt;/a&gt;</pre><br>For external links and hierarchy use HTML tags.</p>' +
                 '<input type="button" id="back" value="Back">' +
                 '<form id="editAdd">' +
                 '<fieldset id="imgLoad">' +
-                '<br><label for="tags">Tags for Search (Separate with commas)</label>' +
+                '<br><label for="tags">Tags for Search (Separate with commas, no spaces after comma)</label>' +
                 '<input id="tags" type="text" size="35"><br><br>' +
                 '<label for="imgObj">Entry Image</label>' +
                 '<img id="imgObj" alt="akoka"><br>' +
@@ -150,7 +150,11 @@ $(function () {
             case 'imgEdit':
                 currentId = $("#img").children(":selected").attr("id");
                 entryEdit(currentType, currentId);
-                $('<label for="pdfObj">Include PDF</label><input type="file" id="pdfBrw" name="pdfBrw">').insertAfter('#tags');
+                $('<label for="pdfBrw" id="pdfLabel">Include PDF</label><input type="file" id="pdfBrw" name="pdfBrw">').insertAfter('#tags');
+                var entryPdf = data_en.category[currentId[0]].subcategory[parseInt(currentId.slice(1, 3))].imgs[parseInt(currentId.slice(3, 5))].pdfFlag;
+                if (entryPdf === 'on') {
+                    $('#pdfLabel').html('Overwrite current PDF');
+                }
                 break;
             case 'catAdd':
                 entryAdd(currentType);
@@ -162,7 +166,7 @@ $(function () {
             case 'imgAdd':
                 parentId = $("#subcategory").children(":selected").attr("id");
                 entryAdd(currentType, parentId);
-                $('<label for="pdfObj">Include PDF</label><input type="file" id="pdfBrw" name="pdfBrw">').insertAfter('#tags');
+                $('<label for="pdfBrw" id="pdfLabel">Include PDF</label><input type="file" id="pdfBrw" name="pdfBrw">').insertAfter('#tags');
                 break;
         }
         if (currentSubcat === null) {
@@ -181,6 +185,7 @@ $(function () {
             var entryInfo = '';
             var entryName = '';
 
+
             if (currentType === 'catEdit') {
                 entryImg = data_en.category[currentId].categoryImg;
                 entryInfo = data_en.category[currentId].categoryInfo;
@@ -197,6 +202,7 @@ $(function () {
                 $('h3').html('Enter a description for image ' + entryName);
             }
             $('#imgObj').attr('src', 'img/content/' + entryImg);
+
             $.get('text/' + entryInfo + '.txt', function (data) {
                 currentData = data;
             }).done(function () {
@@ -263,7 +269,7 @@ $(function () {
     // Browse function
     $(document).on('change', '#imgBrw', function () {
         var preview = document.getElementById('imgObj');
-        var file = document.querySelector('input[type=file]').files[0];
+        var file = document.getElementById('imgBrw').files[0];
         var reader = new FileReader();
         reader.onloadend = function () {
             preview.src = reader.result;
@@ -337,6 +343,7 @@ $(function () {
                     var delImg = [];
                     delImg.push(data_en.category[currentIdG[0]].subcategory[parseInt(currentIdG.slice(1, 3))].imgs[parseInt(currentIdG.slice(3, 5))].imgImg);
                     data_en.category[currentIdG[0]].subcategory[parseInt(currentIdG.slice(1, 3))].imgs.splice(parseInt(currentIdG.slice(3, 5)), 1);
+                    var delPdf = data_en.category[currentIdG[0]].subcategory[parseInt(currentIdG.slice(1, 3))].imgs[parseInt(currentIdG.slice(3, 5))].imgInfo + '.pdf';
                     break;
             }
 //reorder indexes
@@ -377,7 +384,7 @@ $(function () {
             $.ajax({
                 url: "file_handler.php",
                 type: "POST",
-                data: {delTxt: delTxt, delImg: delImg},
+                data: {delTxt: delTxt, delImg: delImg, delPdf: delPdf, },
                 success: function () {
                     console.log('file deleted');
                 },
@@ -595,7 +602,7 @@ $(function () {
                             }
                         });
                     }
-                   
+
                     json_en = {
                         "imgName": nameA,
                         "imgId": currentIdG,
@@ -684,34 +691,34 @@ $(function () {
                     break;
             }
 
- if (pdfFlag === 'on') {
-            var input = document.getElementById("pdfBrw");
-            file = input.files[0];
-            if (file !== undefined) {
-                formData = new FormData();
-                if (file.type === 'application/pdf') {
-                    formData.append("pdf", file);
-                    formData.append("pdfA", articleA + '.pdf');
-                    $.ajax({
-                        url: "file_handler.php",
-                        type: "POST",
-                        data: formData,
-                        processData: false,
-                        contentType: false,
-                        success: function () {
-                            console.log('PDF copied');
-                        },
-                        error: function () {
-                            alert('PDF copy failed');
-                        }
-                    });
-                } else {
-                    alert('Not a valid PDF');
-                }
-            } else {
-                console.log('No PDF change');
-            }             
+            if (pdfFlag === 'on') {
+                var input = document.getElementById("pdfBrw");
+                file = input.files[0];
+                if (file !== undefined) {
+                    formData = new FormData();
+                    if (file.type === 'application/pdf') {
+                        formData.append("pdf", file);
+                        formData.append("pdfA", articleA + '.pdf');
+                        $.ajax({
+                            url: "file_handler.php",
+                            type: "POST",
+                            data: formData,
+                            processData: false,
+                            contentType: false,
+                            success: function () {
+                                console.log('PDF copied');
+                            },
+                            error: function () {
+                                alert('PDF copy failed');
+                            }
+                        });
+                    } else {
+                        alert('Not a valid PDF');
                     }
+                } else {
+                    console.log('No PDF change');
+                }
+            }
             var input = document.getElementById("imgBrw");
             file = input.files[0];
             if (file !== undefined) {

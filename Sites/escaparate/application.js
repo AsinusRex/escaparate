@@ -7,6 +7,7 @@ var data = $.getJSON('data_en.json', function (dataJson) {
     var prevState = '';
 }).done(function () {
     var loadedText = [];
+    document.styleSheets[1].disabled = true;
     populateFooter();
     function populateFooter() {
         var enBtn = ['Contact Us', 'Meet Gal Akoka', 'Language', 'Search'];
@@ -14,10 +15,14 @@ var data = $.getJSON('data_en.json', function (dataJson) {
         var ruBtn = ['Контакты', 'Знакомства Гал Акока', 'Язык', 'поиск'];
         var heBtn = ['צור קשר', 'תכירו את גל אקוקה', 'שפה', 'חיפוש'];
         var btnArray = [enBtn, frBtn, ruBtn, heBtn];
+        var returnHex = '\u23ce';
+        var placeholder = ['Click search or press ', 'Cliquez sur recherche ou appuyez ',
+            'Нажмите на Поиск или нажмите ', 'לחץ חיפוש או הקש '];
         $.each($('#footer button'), function (i) {
             $('#' + this.id).html(btnArray[currentLang][i]);
             i++;
         });
+        $('#searchTerm').attr('placeholder', placeholder[currentLang] + returnHex);
     }
 //Views
     function viewControl(viewType) {
@@ -46,7 +51,7 @@ var data = $.getJSON('data_en.json', function (dataJson) {
     function langView() {
         $('#main').html('<img id="logoLang" src="img/resources/logo.png" alt="Optimized for 21st century browsers"><span id="langlist"></span>');
         $('#layoutWrapper').css('background', 'white');
-        $('video').remove();
+        $('video, .galleryBtn, .galleryBack').remove();
         $.each(lang, function (i) {
             $('#langlist').append('<button class="langBtn" id="' + lang[i] + '">' + langName[i] + '</button>');
             i++;
@@ -92,9 +97,8 @@ var data = $.getJSON('data_en.json', function (dataJson) {
 //Main sequence
     function homeMenu(currentLang) {
         //rtl for Hebrew
-        if (currentLang === '3') {
+        if (currentLang === 3) {
             document.styleSheets[1].disabled = false;
-
         }
         else {
             document.styleSheets[1].disabled = true;
@@ -120,6 +124,8 @@ var data = $.getJSON('data_en.json', function (dataJson) {
         });
     }
     ;
+
+
     //Clicks
 //Home 
     $(document).on('click', '#logoMenu, #homeGallery', function () {
@@ -128,15 +134,15 @@ var data = $.getJSON('data_en.json', function (dataJson) {
     });
 //toggle submenu and load subcats in main
     $(document).on('click', '.catBtns', function () {
-        $('.results, .contact').remove();
+        $('.results, .contact, #resultsList').remove();
+        var galleryBtnText = ['Scroll down', 'Faites défiler', 'Прокрутите вниз', 'גלול למטה'];
         var catId = this.id;
         var catInfo = data.category[catId].categoryInfo;
         var catName = data.category[catId].categoryName.split('<--name-->')[currentLang];
         var catText = '';
         var galleryBtnCheck = $('.galleryBtn').length;
-
         if (galleryBtnCheck < 1) {
-            $('#layoutWrapper').prepend('<button class="galleryBtn" id="galleryBtn' + this.id + '">Scroll down for gallery</button>');
+            $('#layoutWrapper').prepend('<button class="galleryBtn" id="galleryBtn' + this.id + '">' + galleryBtnText[currentLang] + '</button>');
         }
         else {
             var currentId = this.id;
@@ -161,10 +167,12 @@ var data = $.getJSON('data_en.json', function (dataJson) {
             $('#main').append('<span class="entryInfo"><h1>' + catName + '</h1>' + catText + '</span>');
         }
 
+        
 
     });
     $(document).on('click', '.subcatBtns', function () {
-        $('.results, .contact').remove();
+        $('.results, .contact, #resultsList').remove();
+        var galleryBtnText = ['Scroll down', 'Faites défiler', 'Прокрутите вниз', 'גלול למטה'];
         var subcatId = this.id;
         var catIndex = subcatId[0];
         var subcatIndex = parseInt(this.id.slice(1, 3));
@@ -175,7 +183,7 @@ var data = $.getJSON('data_en.json', function (dataJson) {
         var galleryBtnCheck = $('.galleryBtn').length;
         if (imgCheck > 0) {
             if (galleryBtnCheck < 1) {
-                $('#layoutWrapper').prepend('<button class="galleryBtn" id="galleryBtn' + this.id + '">Scroll down for gallery</button>');
+                $('#layoutWrapper').prepend('<button class="galleryBtn" id="galleryBtn' + this.id + '">' + galleryBtnText[currentLang] + '</button>');
             }
             else {
                 var currentId = this.id;
@@ -201,7 +209,6 @@ var data = $.getJSON('data_en.json', function (dataJson) {
         }
 
     });
-
 // Open gallery
     $(document).on('click', '.galleryBtn', function () {
         var galleryId = this.id;
@@ -213,9 +220,6 @@ var data = $.getJSON('data_en.json', function (dataJson) {
         var galleryBackCheck = $('.galleryBack').length;
         var returnToOriginCheck = $('.returnToOrigin').length;
         var scrollPosition = $('.entryGalleryDiv:first').position();
-
-
-
         //scroll down to gallery
         if ((e.originalEvent.detail > 0 || e.originalEvent.wheelDelta < 0) && galleryBtnCheck > 0) {
             var galleryId = $('.galleryBtn').attr('id');
@@ -240,7 +244,6 @@ var data = $.getJSON('data_en.json', function (dataJson) {
         $('#main').html('');
         $('#homeGallery, .returnToOrigin').remove();
         $('#layoutWrapper').removeAttr('style');
-
         var entryId = galleryId.split('n')[1];
         var catIndex = entryId[0];
         var subcatIndex = parseInt(entryId.slice(1, 3));
@@ -282,7 +285,6 @@ var data = $.getJSON('data_en.json', function (dataJson) {
                 var imgInfo = data.category[catIndex].subcategory[subcatIndex].imgs[i].imgInfo;
                 var imgId = data.category[catIndex].subcategory[subcatIndex].imgs[i].imgId;
                 var imgStyle = '" style="background-image: url(img/content/' + data.category[catIndex].subcategory[subcatIndex].imgs[i].imgImg + '); background-size:contain; background-repeat:no-repeat; background-position: center;' + cursorType + '">';
-
                 var imgText = $.get('text/' + imgInfo + '.txt', function (text) {
                     imgText = text.split('<--lang-->')[currentLang];
                 });
@@ -299,14 +301,13 @@ var data = $.getJSON('data_en.json', function (dataJson) {
                     i++;
                 });
                 subentryList.push('<span name="' + imgName + '" id="GS_' + imgId + '" class="gallerySpan">' + imgName + '</span>');
-
             });
             $('#homeGallery, .returnToOrigin').remove();
-
         }
         var sortedList = '<div id="spanScroller">' + subentryList.sort().join().replace(/,/g, '') + '</div>';
+        var galleryBackText = ['Back', 'Arrière', 'назад', 'חזרה'];
         $('.galleryBtn').remove();
-        $('#layoutWrapper').prepend('<button class="galleryBack" id="GS_' + galleryId + '">Back</button><button id="homeGallery" ></button>');
+        $('#layoutWrapper').prepend('<button class="galleryBack" id="GS_' + galleryId + '">' + galleryBackText[currentLang] + '</button><button id="homeGallery" ></button>');
         $('#main').append(sortedList);
         $('#homeGallery').animate({
             margin: "0"
@@ -357,9 +358,7 @@ var data = $.getJSON('data_en.json', function (dataJson) {
     $(document).on('click', '.gallerySpan', function () {
         var targetId = $(this).html();
         $('#' + targetId).scrollintoview({duration: "slow", direction: "y"});
-
     });
-
     $(document).on('click', '.returnToOrigin', function () {
         var btnId = $('.entryInfo h1').html();
         prevGallery(btnId);
@@ -367,7 +366,6 @@ var data = $.getJSON('data_en.json', function (dataJson) {
 //Return to Previous Gallery
     function prevGallery(btnId) {
         $('html').replaceWith(prevState);
-
         $('#main').scrollTop(99999);
         $('#' + btnId).scrollintoview({duration: "slow", direction: "y"});
     }
@@ -405,7 +403,6 @@ var data = $.getJSON('data_en.json', function (dataJson) {
                 $('#' + contactArray[i]).attr('target', '_blank');
             }
         });
-
     });
 //Meet Gal Akoka button
     $(document).on('click', '#founder', function () {
@@ -430,36 +427,43 @@ var data = $.getJSON('data_en.json', function (dataJson) {
     function searchJson() {
         var matchesId = [];
         var matchesName = [];
+        var matchesRelated = [];
         var searchTerm = $('#searchTerm').val();
         $('#searchTerm, .galleryBtn').toggleClass('hide');
+        $('#searchTerm').focus();
         if ($('#searchTerm').hasClass('hide') && searchTerm !== '') {
 
             for (var i = 0; i < data.category.length; i++) {
                 var catName = data.category[i].categoryName.split('<--name-->')[currentLang];
+                var catRelated = data.category[i].searchTerms;
                 if (catName === searchTerm || data.category[i].searchTerms.split(',').indexOf(searchTerm) !== -1) {
                     matchesId.push(data.category[i].categoryId);
                     matchesName.push(catName);
+                    matchesRelated.push(catRelated);
                 }
                 for (var j = 0; j < data.category[i].subcategory.length; j++) {
                     var subcatName = data.category[i].subcategory[j].subcategoryName.split('<--name-->')[currentLang];
+                    var subcatRelated = data.category[i].subcategory[j].searchTerms;
                     if (subcatName === searchTerm || data.category[i].subcategory[j].searchTerms.split(',').indexOf(searchTerm) !== -1) {
                         matchesId.push(data.category[i].subcategory[j].subcategoryId);
                         matchesName.push(subcatName);
+                        matchesRelated.push(subcatRelated);
                     }
                     for (var k = 0; k < data.category[i].subcategory[j].imgs.length; k++) {
                         var imgName = data.category[i].subcategory[j].imgs[k].imgName.split('<--name-->')[currentLang];
+                        var imgRelated = data.category[i].subcategory[j].imgs[k].searchTerms;
                         if (imgName === searchTerm || data.category[i].subcategory[j].imgs[k].searchTerms.split(',').indexOf(searchTerm) !== -1) {
                             matchesId.push(data.category[i].subcategory[j].imgs[k].imgId);
                             matchesName.push(imgName);
+                            matchesRelated.push(imgRelated);
                         }
                     }
                 }
             }
-            populateResults(matchesId, matchesName);
-
+            populateResults(matchesId, matchesName, matchesRelated, searchTerm);
         }
     }
-    function populateResults(matchesId, matchesName) {
+    function populateResults(matchesId, matchesName, matchesRelated, searchTerm) {
 
         if (matchesId.length === 0) {
             $('#footer').append('<div id="noResults" style="text-align:center; line-height:4vh; height:4vh;">Search term not found</div>');
@@ -471,14 +475,21 @@ var data = $.getJSON('data_en.json', function (dataJson) {
             ;
         }
         else {
-            viewControl('full');
+            var SearchResultsHeader = ['Search Results for ', 'Résultats de la recherche pour ',
+                'Результаты поиска по ',
+                'תוצאות חיפוש עבור '];
+            viewControl('normal');
             $('#main').html('');
-            $('#layoutWrapper').css('background', 'black');
-            viewControl('full');
-            $('#main').html('');
+            $('#layoutWrapper').css('background', 'white');
+            $('.galleryBack, .galleryBtn, video').remove();
+            $('#main').html('<ol id="resultsList"><h2>' + SearchResultsHeader[currentLang] + searchTerm + '</h2></ol>');
             for (var i = 0; i < matchesId.length; i++) {
-                $('#layoutWrapper').css('background', 'black');
-                $('#main').append('<button id="search_' + matchesId[i] + '" class="searchMatch">' + matchesName[i] + '</button>');
+                var eachRelated = matchesRelated[i].split(',');
+                var terms = [];
+                for (var j = 0; j < eachRelated.length; j++) {
+                    terms.push(' <a class="relatedTerms">' + eachRelated[j] + '</a>');
+                }
+                $('#resultsList').append('<li id="search_' + matchesId[i] + '" class="searchMatch">' + matchesName[i] + '</li><p>Related terms: ' + terms + '</p>');
             }
         }
     }
@@ -486,14 +497,12 @@ var data = $.getJSON('data_en.json', function (dataJson) {
     $(document).on('click', '.searchMatch', function () {
         var searchId = this.id;
         var targetId = searchId.split('_')[1];
-        $('.searchMatch').remove();
-
+        $('#resultsList').remove();
         if (targetId.length <= 3) {
             $('#' + targetId).click();
         }
         else {
             $('#' + targetId.slice(0, 3)).click();
-
             var timeout = window.setTimeout(galleryClick, 500);
             function galleryClick() {
                 $('.galleryBtn').click();
@@ -502,5 +511,18 @@ var data = $.getJSON('data_en.json', function (dataJson) {
         }
     });
 
+//Click on related term search
+    $(document).on('click', '.relatedTerms', function () {
+        $('#search').click();
+        var newTerm = $(this).html();
+        newTerm = newTerm.trim();
+        $('#searchTerm').val(newTerm);
+        searchJson();
+    });
 });
 
+
+////On click anything add params to URKL for backfunction
+//
+//$(document).on('click', '.catBtns, .subcatBtns, #langSelect, #home, .galleryBtn, .galleryBack ', function () {
+//window.location.hash = "dialog";});
